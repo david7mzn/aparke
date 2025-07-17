@@ -1,33 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Aparké - Encuentra aparcamiento libre</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aparké - Encuentra tu aparcamiento</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f9f9f9;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
       text-align: center;
-      padding: 60px 20px;
     }
-    img {
-      width: 150px;
-      margin-bottom: 25px;
+    header {
+      background-color: #007bff;
+      padding: 20px;
+      color: white;
+    }
+    img.logo {
+      width: 120px;
+      margin-top: 10px;
     }
     h1 {
-      color: #222;
-      font-size: 2.5em;
-      margin-bottom: 10px;
+      margin: 10px 0;
     }
     p {
       font-size: 18px;
-      color: #444;
+      color: #333;
+    }
+    .botones {
+      margin-top: 30px;
+    }
+    .boton {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    .boton:hover {
+      background-color: #218838;
     }
   </style>
 </head>
 <body>
-  <img src="logo.png" alt="Logo de Aparké">
-  <h1>Bienvenido a Aparké 🚗</h1>
-  <p>App colaborativa para encontrar aparcamiento libre en Monzón.</p>
+  <header>
+    <img src="logo.png" alt="Logo Aparké" class="logo" />
+    <h1>Bienvenido a Aparké 🚗</h1>
+    <p>App colaborativa para encontrar aparcamiento libre en Monzón.</p>
+  </header>
+
+  <div class="botones">
+    <button class="boton" onclick="alert('Funcionalidad en desarrollo')">Ver plazas disponibles</button>
+    <button class="boton" onclick="alert('Funcionalidad en desarrollo')">Marcar hueco libre</button>
+  </div>
 </body>
 </html>

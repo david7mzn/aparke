@@ -2,35 +2,107 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aparké - Encuentra aparcamiento en Monzón</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aparké – Encuentra aparcamiento libre en Monzón</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+    }
+    header {
+      background: #007bff;
+      color: white;
+      padding: 10px;
       text-align: center;
-      padding: 40px;
-      background-color: #f9f9f9;
     }
-
-    img {
-      width: 180px;
-      margin-bottom: 30px;
+    header img {
+      height: 50px;
+      vertical-align: middle;
     }
-
-    h1 {
-      color: #1e1e1e;
-      font-size: 32px;
+    header h1 {
+      display: inline-block;
+      margin: 0;
+      font-size: 24px;
+      vertical-align: middle;
     }
-
-    p {
-      color: #444;
-      font-size: 18px;
+    #map {
+      width: 100%;
+      height: 70vh;
+    }
+    button {
+      display: block;
+      width: 90%;
+      max-width: 300px;
+      margin: 20px auto;
+      padding: 15px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
     }
   </style>
 </head>
 <body>
-  <img src="logo.png" alt="Logo de Aparké" />
-  <h1>Bienvenido a Aparké 🚗</h1>
-  <p>App colaborativa para encontrar aparcamiento libre en Monzón.</p>
+  <header>
+    <img src="logo.png" alt="Logo Aparké" />
+    <h1>Aparké</h1>
+  </header>
+
+  <div id="map"></div>
+  <button onclick="marcarHueco()">📍 Marcar hueco libre</button>
+
+  <script>
+    let map;
+
+    function initMap() {
+      const monzon = { lat: 41.9143, lng: 0.1927 };
+      map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: monzon,
+      });
+
+      // Aparké Prime: detectar entrada a Monzón
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          const dentroDeMonzon = lat > 41.90 && lat < 41.93 && lng > 0.18 && lng < 0.21;
+          if (dentroDeMonzon) {
+            alert("🔔 Aparké Prime: Mostrando huecos disponibles en Monzón.");
+          }
+        });
+      }
+    }
+
+    function marcarHueco() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+          const ubicacion = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+          new google.maps.Marker({
+            position: ubicacion,
+            map,
+            icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
+            title: "Hueco libre marcado"
+          });
+          map.setCenter(ubicacion);
+        }, () => alert("No se pudo obtener tu ubicación"));
+      } else {
+        alert("Tu navegador no permite geolocalización.");
+      }
+    }
+  </script>
+
+  <!-- Reemplaza TU_API_KEY por tu clave de Google Maps -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&callback=initMap"></script>
 </body>
 </html>

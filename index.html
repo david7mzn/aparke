@@ -3,106 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aparké – Encuentra aparcamiento libre en Monzón</title>
+  <title>Aparké</title>
   <style>
-    body {
-      font-family: sans-serif;
+    * {
       margin: 0;
       padding: 0;
-      background: #f9f9f9;
+      box-sizing: border-box;
     }
-    header {
-      background: #007bff;
-      color: white;
-      padding: 10px;
-      text-align: center;
+
+    body {
+      font-family: sans-serif;
+      background-color: white;
+      height: 100vh;
+      overflow: hidden;
     }
-    header img {
-      height: 50px;
-      vertical-align: middle;
-    }
-    header h1 {
-      display: inline-block;
-      margin: 0;
-      font-size: 24px;
-      vertical-align: middle;
-    }
-    #map {
+
+    #splash, #menu {
+      position: absolute;
       width: 100%;
-      height: 70vh;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease;
     }
-    button {
-      display: block;
-      width: 90%;
-      max-width: 300px;
-      margin: 20px auto;
-      padding: 15px;
-      font-size: 16px;
-      background-color: #28a745;
-      color: white;
+
+    #splash img {
+      width: 80vw;
+      height: auto;
+      max-height: 80vh;
+      object-fit: contain;
+    }
+
+    #menu {
+      flex-direction: column;
+      gap: 20px;
+      opacity: 0;
+      pointer-events: none;
+      background-color: white;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      font-size: 18px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      width: 80%;
+      max-width: 300px;
     }
-    button:hover {
-      background-color: #218838;
+
+    .buscar {
+      background-color: black;
+      color: white;
+    }
+
+    .ocupar {
+      background-color: red;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <header>
-    <img src="logo.png" alt="Logo Aparké" />
-    <h1>Aparké</h1>
-  </header>
 
-  <div id="map"></div>
-  <button onclick="marcarHueco()">📍 Marcar hueco libre</button>
+  <!-- Pantalla de presentación con el logo -->
+  <div id="splash">
+    <img src="logo-aparke.jpeg" alt="Logo Aparké" />
+  </div>
+
+  <!-- Menú de opciones -->
+  <div id="menu">
+    <button class="btn buscar" onclick="abrirMaps()">Buscar hueco libre</button>
+    <button class="btn ocupar" onclick="abrirMaps()">Marcar hueco ocupado</button>
+  </div>
 
   <script>
-    let map;
+    // Mostrar menú después de 2 segundos
+    setTimeout(() => {
+      document.getElementById('splash').style.opacity = '0';
+      document.getElementById('menu').style.opacity = '1';
+      document.getElementById('menu').style.pointerEvents = 'all';
+    }, 2000);
 
-    function initMap() {
-      const monzon = { lat: 41.9143, lng: 0.1927 };
-      map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 15,
-        center: monzon,
-      });
-
-      // Aparké Prime: detectar entrada a Monzón
+    // Función para abrir Google Maps en ubicación actual
+    function abrirMaps() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((pos) => {
-          const lat = pos.coords.latitude;
-          const lng = pos.coords.longitude;
-          const dentroDeMonzon = lat > 41.90 && lat < 41.93 && lng > 0.18 && lng < 0.21;
-          if (dentroDeMonzon) {
-            alert("🔔 Aparké Prime: Mostrando huecos disponibles en Monzón.");
-          }
+        navigator.geolocation.getCurrentPosition((position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          window.location.href = `https://www.google.com/maps?q=${lat},${lon}`;
+        }, () => {
+          alert("No se pudo obtener tu ubicación.");
         });
-      }
-    }
-
-    function marcarHueco() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((pos) => {
-          const ubicacion = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude
-          };
-          new google.maps.Marker({
-            position: ubicacion,
-            map,
-            icon: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
-            title: "Hueco libre marcado"
-          });
-          map.setCenter(ubicacion);
-        }, () => alert("No se pudo obtener tu ubicación"));
       } else {
-        alert("Tu navegador no permite geolocalización.");
+        alert("Tu dispositivo no soporta geolocalización.");
       }
     }
   </script>
 
-  <!-- Reemplaza TU_API_KEY por tu clave de Google Maps -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY&callback=initMap"></script>
 </body>
 </html>

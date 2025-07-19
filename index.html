@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aparké</title>
   <style>
     * {
@@ -12,98 +12,86 @@
     }
 
     body {
-      font-family: sans-serif;
-      background-color: white;
-      height: 100vh;
-      overflow: hidden;
+      background-color: #003366; /* Fondo azul */
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
     }
 
-    #splash, #menu {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    .splash {
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: opacity 0.5s ease;
+      height: 100vh;
     }
 
-    #splash img {
+    .splash img {
       width: 80vw;
-      height: auto;
-      max-height: 80vh;
-      object-fit: contain;
-      display: block;
-    }
-
-    #menu {
-      flex-direction: column;
-      gap: 20px;
-      opacity: 0;
-      pointer-events: none;
-      background-color: white;
-    }
-
-    .btn {
-      padding: 15px 30px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 80%;
       max-width: 300px;
     }
 
-    .buscar {
-      background-color: black;
-      color: white;
+    .main {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      gap: 30px;
     }
 
-    .ocupar {
-      background-color: red;
+    button {
+      padding: 20px 40px;
+      font-size: 20px;
+      border: none;
+      border-radius: 10px;
       color: white;
+      cursor: pointer;
+    }
+
+    #buscar {
+      background-color: #28a745; /* Verde */
+    }
+
+    #ocupar {
+      background-color: #dc3545; /* Rojo */
     }
   </style>
 </head>
 <body>
 
-  <!-- Pantalla de presentación con el logo -->
-  <div id="splash">
-    <img src="logo-aparke.jpeg" alt="Logo Aparké" />
+  <!-- Pantalla de presentación -->
+  <div class="splash" id="splash">
+    <img src="logo.png" alt="Logo Aparké" />
   </div>
 
-  <!-- Menú de opciones -->
-  <div id="menu">
-    <button class="btn buscar" onclick="abrirMaps()">Buscar hueco libre</button>
-    <button class="btn ocupar" onclick="abrirMaps()">Marcar hueco ocupado</button>
+  <!-- Pantalla principal -->
+  <div class="main" id="main">
+    <button id="buscar">Buscar hueco libre</button>
+    <button id="ocupar">Marcar hueco ocupado</button>
   </div>
 
   <script>
-    // Mostrar el menú tras 2 segundos
+    // Mostrar splash durante 2 segundos
     setTimeout(() => {
-      document.getElementById('splash').style.opacity = '0';
-      document.getElementById('menu').style.opacity = '1';
-      document.getElementById('menu').style.pointerEvents = 'auto';
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('main').style.display = 'flex';
     }, 2000);
 
-    // Abrir Google Maps con ubicación
-    function abrirMaps() {
+    // Función para abrir Google Maps con ubicación
+    function openMaps() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            window.location.href = `https://www.google.com/maps?q=${lat},${lon}`;
-          },
-          () => alert("No se pudo obtener tu ubicación.")
-        );
+        navigator.geolocation.getCurrentPosition((position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          window.location.href = `https://www.google.com/maps?q=${lat},${lng}`;
+        });
       } else {
-        alert("Tu dispositivo no soporta geolocalización.");
+        alert('Tu navegador no soporta geolocalización');
       }
     }
-  </script>
 
+    document.getElementById('buscar').addEventListener('click', openMaps);
+    document.getElementById('ocupar').addEventListener('click', openMaps);
+  </script>
 </body>
 </html>

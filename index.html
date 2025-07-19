@@ -20,6 +20,8 @@
 
     #splash, #menu {
       position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       display: flex;
@@ -33,6 +35,7 @@
       height: auto;
       max-height: 80vh;
       object-fit: contain;
+      display: block;
     }
 
     #menu {
@@ -78,23 +81,24 @@
   </div>
 
   <script>
-    // Mostrar menú después de 2 segundos
+    // Mostrar el menú tras 2 segundos
     setTimeout(() => {
       document.getElementById('splash').style.opacity = '0';
       document.getElementById('menu').style.opacity = '1';
-      document.getElementById('menu').style.pointerEvents = 'all';
+      document.getElementById('menu').style.pointerEvents = 'auto';
     }, 2000);
 
-    // Función para abrir Google Maps en ubicación actual
+    // Abrir Google Maps con ubicación
     function abrirMaps() {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          window.location.href = `https://www.google.com/maps?q=${lat},${lon}`;
-        }, () => {
-          alert("No se pudo obtener tu ubicación.");
-        });
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            window.location.href = `https://www.google.com/maps?q=${lat},${lon}`;
+          },
+          () => alert("No se pudo obtener tu ubicación.")
+        );
       } else {
         alert("Tu dispositivo no soporta geolocalización.");
       }
